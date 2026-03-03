@@ -30,10 +30,15 @@
         .font-bangla{
             font-family: "Hind Siliguri", sans-serif;
         }
+        .active{
+          background-color: rgb(31, 206, 31);
+          border-color: rgb(35, 189, 35);
+          color: rgb(47, 47, 167);
+        }
       </style>
 </head>
 <body>
- <header class="">
+ <header>
   <div class="navbar bg-base-100 shadow-sm bg-[#e3f1fd] w-full">
   <div class="navbar-start">
     <div class="dropdown">
@@ -96,7 +101,12 @@
   <div id="level-container" class="flex gap-3 flex-wrap justify-center mt-10"></div>
  </section>
  <!-- lesson select section -->
-  <section id="word-container" class="bg-gray-100 p-10 w-11/12 mx-auto my-10 grid grid-cols-1 md:grid-cols-3 gap-5">
+  <section id="word-container" class="bg-gray-100 p-10 w-11/12 mx-auto my-10 grid grid-cols-1 md:grid-cols-3 gap-5 rounded-xl">
+    <div class="col-span-full text-center py-10">
+      <button class="mb-4"><i class="fa-solid fa-hand-point-up"></i></button>
+      <p class="font-bangla text-[#79716B] mb-6 ">আপনি এখনো কোন Lesson Select করেন নি</p>
+      <h1 class="font-bangla font-bold text-4xl">একটি Lesson Select করুন।</h1>
+    </div>
   </section>
  <script src="script/index.js"></script>
 </body>
