@@ -1,10 +1,23 @@
-const loadLessons = ()=> {
+ const createElements = (arr)=>{
+ const htmlElements = arr.map((el) => `<span class="btn">${el}</span>`);
+ return htmlElements.join(" ");
+}
+const manageSpinner = (status)=>{
+  if(status == true){
+   document.getElementById("spinner").classList.remove("hidden");
+   document.getElementById("word-container").classList.add("hidden");
+  }else{
+   document.getElementById("word-container").classList.remove("hidden");
+   document.getElementById("spinner").classList.add("hidden");
+  }
+}
+const loadLessons = () => {
 fetch("https://openapi.programming-hero.com/api/levels/all")
 .then(res => res.json())
 .then(json => displayLesson(json.data));
 };
 
-const removeActive=()=>{
+const removeActive = () => {
   const lessonButtons = document.querySelectorAll(".lesson-btn");
   // console.log(lessonButtons);
   lessonButtons.forEach ((btn) => btn.classList.remove("active"));
@@ -12,7 +25,13 @@ const removeActive=()=>{
 }
 
 
-const loadLevelWord = (id)=>{ 
+const loadLevelWord = (id) => { 
+  const wordContainer = document.getElementById("word-container");
+ wordContainer.innerHTML =`
+ <section id="spinner" class="col-span-3 flex justify-center items-center py-10">
+    <span class="loading loading-dots loading-xl"></span>
+  </section>
+  `;
  const url =`https://openapi.programming-hero.com/api/level/${id}`
  fetch(url)
  .then(res => res.json())
@@ -26,6 +45,7 @@ const loadLevelWord = (id)=>{
 }
 
 const loadWordDetail = async(id) => {
+  manageSpinner(true);
   const url =`https://openapi.programming-hero.com/api/word/${id}`;
   const res = await fetch(url);
   const details = await res.json();
@@ -47,15 +67,13 @@ detailsBox.innerHTML=`
         <h2 class="font-semibold">Example</h2>
         <p class=" ">${word.sentence}</p>
        </div>
-     
-      <h2 class="font-bangla font-semibold">সমার্থক শব্দ গুলো</h2>
-      <div class=" flex gap-3">
-       <button class="border border-[#D7E4EF] rounded cursor-pointer bg-[#D7E4EF] py-2 px-3 font-semibold mt-2">Enthusiastic</button>
-       <button class="border border-[#D7E4EF] rounded cursor-pointer bg-[#D7E4EF] py-2 px-3 font-semibold mt-2">excited</button>
-       <button class="border border-[#D7E4EF] rounded cursor-pointer bg-[#D7E4EF] py-2 px-3 font-semibold mt-2">keen</button>
+
+      <div class="">
+      <h2 class="font-semibold">synonym</h2>
+       <div class="">${createElements(word.synonyms)}</div>
       </div>
-`;
-document.getElementById("details_modal").showModal();
+  `;
+  document.getElementById("details_modal").showModal();
 }
 
 const displayLevelWord = (words) =>{
@@ -94,7 +112,7 @@ words.forEach (word => {
  `;
  wordContainer.append(card);
  });
-
+ manageSpinner(false);
 }
 const displayLesson = (lessons) => {
 //   1.  get the container & empty
