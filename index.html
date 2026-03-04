@@ -31,9 +31,9 @@
             font-family: "Hind Siliguri", sans-serif;
         }
         .active{
-          background-color: rgb(31, 206, 31);
-          border-color: rgb(35, 189, 35);
-          color: rgb(47, 47, 167);
+          background-color: rgb(24, 104, 179);
+          border-color: rgb(35, 127, 189);
+          color: rgb(249, 249, 250);
         }
       </style>
 </head>
@@ -108,6 +108,25 @@
       <h1 class="font-bangla font-bold text-4xl">একটি Lesson Select করুন।</h1>
     </div>
   </section>
+<!-- Open the modal using ID.showModal() method -->
+<!-- <button class="btn" onclick="my_modal_5.showModal()">open modal</button> -->
+<dialog id="details_modal" class="modal modal-bottom sm:modal-middle rounded">
+  <div class="modal-box">
+
+    <div id="details-container" class=" space-y-5 border border-[#D7E4EF] rounded-xl p-5">
+      
+    </div>
+
+    <div class="modal-action">
+      <form method="dialog">
+        <!-- if there is a button in form, it will close the modal -->
+        <button class="btn">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+  
  <script src="script/index.js"></script>
 </body>
 </html>

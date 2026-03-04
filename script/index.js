@@ -7,7 +7,7 @@ fetch("https://openapi.programming-hero.com/api/levels/all")
 const removeActive=()=>{
   const lessonButtons = document.querySelectorAll(".lesson-btn");
   // console.log(lessonButtons);
-  lessonButtons.forEach ((btn) => btn.classList.remove("active)"));
+  lessonButtons.forEach ((btn) => btn.classList.remove("active"));
   
 }
 
@@ -24,6 +24,40 @@ const loadLevelWord = (id)=>{
   displayLevelWord(data.data)
  });
 }
+
+const loadWordDetail = async(id) => {
+  const url =`https://openapi.programming-hero.com/api/word/${id}`;
+  const res = await fetch(url);
+  const details = await res.json();
+  displayWordDetails(details.data);
+}
+const displayWordDetails = (word) =>{
+const detailsBox = document.getElementById("details-container");
+detailsBox.innerHTML=`
+      <div>
+        <h2 class="text-2xl font-bold font-bangla">${word.word}(<i class="fa-solid fa-microphone-lines"></i>:${word.pronunciation})</h2>
+      </div>
+       
+      <div>
+        <h2 class="font-semibold">Meaning</h2>
+        <p class=" font-bangla font-semibold">${word.meaning}</p>
+      </div>
+      
+       <div>
+        <h2 class="font-semibold">Example</h2>
+        <p class=" ">${word.sentence}</p>
+       </div>
+     
+      <h2 class="font-bangla font-semibold">সমার্থক শব্দ গুলো</h2>
+      <div class=" flex gap-3">
+       <button class="border border-[#D7E4EF] rounded cursor-pointer bg-[#D7E4EF] py-2 px-3 font-semibold mt-2">Enthusiastic</button>
+       <button class="border border-[#D7E4EF] rounded cursor-pointer bg-[#D7E4EF] py-2 px-3 font-semibold mt-2">excited</button>
+       <button class="border border-[#D7E4EF] rounded cursor-pointer bg-[#D7E4EF] py-2 px-3 font-semibold mt-2">keen</button>
+      </div>
+`;
+document.getElementById("details_modal").showModal();
+}
+
 const displayLevelWord = (words) =>{
  const wordContainer = document.getElementById("word-container");
  wordContainer.innerHTML ="";
@@ -33,7 +67,7 @@ const displayLevelWord = (words) =>{
     <div class="col-span-full text-center py-10">
       <img class="mx-auto mb-4" src="./assets/alert-error.png" alt="">
       <p class="font-bangla text-[#79716B] mb-6 ">এই Lesson এ এখনো কোন Vocabulary যুক্ত করা হয়নি।</p>
-      <h1 class="font-bangla font-bold text-4xl">নেক্সট Lesson এ যান</h1>
+      <h1 class="font-bangla font-bold text-4xl">নেক্সট Leasson এ যান</h1>
     </div>
  `;
  return;
@@ -49,9 +83,11 @@ words.forEach (word => {
      <p class="font-bangla font-semibold text-2xl">"${word.meaning ? word.meaning:"অর্থ পাওয়া যায় নি"}/
       ${word.pronunciation ? word.pronunciation :"pronunciation পাওয়া যায় নি"}"</p>
      <div class="flex justify-between items-center">
+
+      <button onclick="loadWordDetail(${word.id})" class="bg-sky-100 p-2 cursor-pointer px-3 rounded hover:bg-blue-300 border
+       border-gray-200"><i class="fa-solid fa-circle-info"></i></button>
+
       <button class="bg-sky-100 p-2 cursor-pointer px-3 rounded hover:bg-blue-300 border border-gray-200">
-        <i class="fa-solid fa-circle-info"></i></button>
-      <button class="bg-sky-100 p-2 cursor-pointer px-3  rounded hover:bg-blue-300 border border-gray-200">
         <i class="fa-solid fa-volume-high"></i></button>
      </div>
   </div>
@@ -78,4 +114,5 @@ for (let lesson of lessons){
     levelContainer.append(btnDiv);
   }
 };
+
 loadLessons();
