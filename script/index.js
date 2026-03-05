@@ -11,6 +11,15 @@ const manageSpinner = (status)=>{
    document.getElementById("spinner").classList.add("hidden");
   }
 }
+// speker sectuon
+function pronounceWord(word) {
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = "en-EN"; // English
+  window.speechSynthesis.speak(utterance);
+}
+
+
+
 const loadLessons = () => {
 fetch("https://openapi.programming-hero.com/api/levels/all")
 .then(res => res.json())
@@ -21,12 +30,11 @@ const removeActive = () => {
   const lessonButtons = document.querySelectorAll(".lesson-btn");
   // console.log(lessonButtons);
   lessonButtons.forEach ((btn) => btn.classList.remove("active"));
-  
+
 }
 
-
 const loadLevelWord = (id) => { 
-  const wordContainer = document.getElementById("word-container");
+const wordContainer = document.getElementById("word-container");
  wordContainer.innerHTML =`
  <section id="spinner" class="col-span-3 flex justify-center items-center py-10">
     <span class="loading loading-dots loading-xl"></span>
@@ -41,11 +49,11 @@ const loadLevelWord = (id) => {
   // console.log(clickBtn);
   clickBtn.classList.add("active");
   displayLevelWord(data.data)
- });
+  });
 }
 
 const loadWordDetail = async(id) => {
-  manageSpinner(true);
+  // manageSpinner(true);
   const url =`https://openapi.programming-hero.com/api/word/${id}`;
   const res = await fetch(url);
   const details = await res.json();
@@ -105,7 +113,7 @@ words.forEach (word => {
       <button onclick="loadWordDetail(${word.id})" class="bg-sky-100 p-2 cursor-pointer px-3 rounded hover:bg-blue-300 border
        border-gray-200"><i class="fa-solid fa-circle-info"></i></button>
 
-      <button class="bg-sky-100 p-2 cursor-pointer px-3 rounded hover:bg-blue-300 border border-gray-200">
+      <button onclick="pronounceWord('${word.word}')" class="bg-sky-100 p-2 cursor-pointer px-3 rounded hover:bg-blue-300 border border-gray-200">
         <i class="fa-solid fa-volume-high"></i></button>
      </div>
   </div>
@@ -134,3 +142,20 @@ for (let lesson of lessons){
 };
 
 loadLessons();
+
+document.getElementById("btn-search").addEventListener("click" , () =>{
+  const input = document.getElementById("input-search");
+  const searchValue = input.value;
+//  console.log(searchValue)
+
+ fetch("https://openapi.programming-hero.com/api/words/all")
+ .then((res) => res.json())
+ .then((data)=>{
+   const allWords = data.data;
+  //  console.log(allWords);
+   const filterWords = allWords.filter((word) => word.word.toLowerCase().includes(searchValue));
+
+   displayLevelWord(filterWords);
+ });
+
+});
